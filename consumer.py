@@ -33,16 +33,17 @@ async def main():
         app.shutdown()
 
 """
-This validator parses the key name from the signature info, then express interest to fetch corresponding certificates.
+This validator parses the key name from the signature info, expresses interest to fetch corresponding certificates, then use fetched 
+certificate to verify Data's signature.
 
 Certificate itself is a Data packet, TLV format specified in https://named-data.net/doc/ndn-cxx/current/specs/certificate-format.html
-Certificate content is an identity's public key, this validator extracts the public key from certificate and verify the original Data 
+Certificate content contains an identity's public key, this validator extracts the public key from certificate and verify the original Data 
 packet's signature.
 
 Note: Completely validating a Data packet includes three steps:
       1. Validating if the signing idenity is authorized to produce this Data packet.
-         We refer this as trust schema, determined by app
-      2. Verifying if the Data signature by signing identity's public key
+         We refer this as trust schema, determined by app.
+      2. Verifying if the Data signature by signing identity's public key.
       3. Verifying signing identity's certificate against its issuer's public key.
          Validator should recursively does this until reach to its trust anchor.
       This validator only does step 2.
